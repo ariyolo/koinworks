@@ -1,0 +1,16 @@
+---
+- name: Install MySQL Server
+  package:
+    name: mysql-server
+    state: present
+
+- name: Copy MySQL configuration file
+  template:
+    src: my.cnf.j2
+    dest: /etc/mysql/my.cnf
+  notify: Restart MySQL
+
+- name: Restart MySQL
+  service:
+    name: mysql
+    state: restarted

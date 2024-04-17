@@ -1,0 +1,17 @@
+---
+- name: Add ondrej/php repository
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+
+- name: Install PHP and required modules
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ php_packages }}"
+
+- name: Ensure PHP-FPM service is enabled and running
+  service:
+    name: php{{ php_version }}-fpm
+    state: started
+    enabled: yes

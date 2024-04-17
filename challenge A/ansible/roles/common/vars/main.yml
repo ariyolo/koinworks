@@ -1,0 +1,18 @@
+---
+server_name: "localhost"
+mysql_root_password: "123root"
+wordpress_db_name: "wordpress_db"
+wordpress_db_user: "wordpress_user"
+wordpress_db_password: "wordpress_db_password"
+php_version: "7.4"
+php_packages:
+  - "php7.4-fpm"
+  - "php7.4-mysql"
+  - "php7.4-common"
+  - "php7.4-curl"
+  - "php7.4-gd"
+  - "php7.4-xml"
+  - "php7.4-mbstring"
+  - "php7.4-json"
+  - "php7.4-zip"
+  - "php7.4-imagick"

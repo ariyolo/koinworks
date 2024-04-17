@@ -1,0 +1,32 @@
+---
+- name: Download WordPress
+  get_url:
+    url: "https://wordpress.org/latest.tar.gz"
+    dest: "/tmp/wordpress-latest.tar.gz"
+
+- name: Extract WordPress
+  unarchive:
+    src: "/tmp/wordpress-latest.tar.gz"
+    dest: "/var/www/html"
+    remote_src: yes
+
+- name: Set ownership and permissions for WordPress files
+  file:
+    path: /var/www/html/wordpress
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+    recurse: yes
+
+- name: Get WordPress salt
+  command: "curl -s https://api.wordpress.org/secret-key/1.1/salt/"
+  register: wordpress_salt
+
+- name: Create wp-config.php from template
+  template:
+    src: wp-config.php.j2
+    dest: /var/www/html/wordpress/wp-config.php
+    owner: www-data
+    group: www-data
+    mode: '0644'
