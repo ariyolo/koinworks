@@ -11,5 +11,5 @@ steps:
     containerRegistry: 'docker-ariyolo'
     repository: 'koin-frontend'
     command: 'buildAndPush'
-    Dockerfile: '$(Agent.BuildDirectory)/build/challenge\ A/nodejs/Dockerfile'
-    buildContext: '$(Agent.BuildDirectory)/build/challenge\ A/nodejs/'
+    Dockerfile: '$(Agent.BuildDirectory)/build/challenge_a/nodejs/Dockerfile'
+    buildContext: '$(Agent.BuildDirectory)/build/challenge_a/nodejs/'
