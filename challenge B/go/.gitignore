@@ -1,0 +1,17 @@
+# Go
+# Folder untuk dependency project Go
+vendor/
+
+# File hasil build Go
+*.exe
+*.test
+*.out
+
+# File sementara Go
+*.o
+[,_]*.a
+[,_]*.[o,a]
+*.syso
+
+# File cache Go
+pkg/

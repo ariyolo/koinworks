@@ -1,0 +1,15 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./go
+    ports:
+      - "8080:8080"
+  
+  frontend:
+    build:
+      context: ./nodejs
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
