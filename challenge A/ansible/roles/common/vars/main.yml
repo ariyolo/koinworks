@@ -1,5 +1,6 @@
 ---
 server_name: "localhost"
+mysql_root_username: "root"
 mysql_root_password: "123root"
 wordpress_db_name: "wordpress_db"
 wordpress_db_user: "wordpress_user"

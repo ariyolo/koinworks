@@ -23,6 +23,10 @@ resource "google_compute_firewall" "allow-ssh" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+resource "google_compute_address" "static" {
+  name = "ipv4-address"
+}
+
 #VM
 resource "google_compute_instance" "wordpress-vm" {
   name          = "wordpress-vm"
@@ -37,23 +41,51 @@ resource "google_compute_instance" "wordpress-vm" {
     }
   }
 
+  metadata = {
+    ssh-keys = "${var.metadata_user}:${var.gce_ssh_pub_key_file}"
+  }
+
   network_interface {
     network = google_compute_network.koinworks-vpc.self_link
     subnetwork = google_compute_subnetwork.subnet1.self_link
     access_config {
-      
+      nat_ip = google_compute_address.static.address
+    }
+  }
+}
+
+resource "null_resource" "configuring" {
+  depends_on = [ google_compute_instance.wordpress-vm ]
+
+  triggers = {
+    date = timestamp()
+  }
+
+  provisioner "file" {
+    source = "ansible/"
+    destination = "/home/ariyolo/"
+
+    connection {
+      host = google_compute_address.static.address
+      type = "ssh"
+      user = "ariyolo"
+      private_key = file("id_rsa")
     }
   }
 
-  # Provisioning with Ansible
+  #Provisioning with Ansible
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y python3-pip",
-      "pip3 install ansible"
+      "sudo apt-get install -y ansible python3-pip",
+      "ansible-playbook playbook.yml"
     ]
-  }
-  provisioner "local-exec" {
-    command = "ansible-playbook -i '${self.network_interface.0.access_config.0.nat_ip},' -u ariyolo --private-key=~/.ssh/id_rsa ./ansible/playbook.yml"
+    
+    connection {
+      host = google_compute_address.static.address
+      type = "ssh"
+      user = "ariyolo"
+      private_key = file("id_rsa")
+    }
   }
 }

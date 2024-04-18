@@ -1,6 +1,6 @@
 ---
 - name: Install WordPress with Custom Nginx and MySQL Config
-  hosts: webserver
+  hosts: localhost
   become: yes
 
   roles:
