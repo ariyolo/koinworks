@@ -9,7 +9,7 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'docker-ariyolo'
-    repository: 'koin-frontend'
+    repository: 'ariyolo/koin-frontend'
     command: 'buildAndPush'
     Dockerfile: '$(Agent.BuildDirectory)/build/challenge_b/nodejs/dockerfile'
     buildContext: '$(Agent.BuildDirectory)/build/challenge_b/nodejs/'
