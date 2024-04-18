@@ -1,0 +1,71 @@
+---
+# tasks file for mysql-server
+# - name: install_debconf-utils
+#   become: yes
+#   apt:
+#      name: debconf-utils
+
+- name: install PyMySQL
+  become: yes
+  pip:
+    name: PyMySQL
+
+# - name: debconfig_root_password_for_mysql-server
+#   become: yes
+#   debconf:
+#     name: mysql-server-5.7
+#     question: mysql-server/root_password
+#     value: "{{mysql_root_password}}"
+#     vtype: password
+
+# - name: debconfig_root_password_for_mysql-server_again
+#   become: yes
+#   debconf:
+#     name: mysql-server-5.7
+#     question: mysql-server/root_password_again
+#     value: "{{mysql_root_password}}"
+#     vtype: password
+
+- name: install_mysql_server_5.7
+  become: yes
+  apt:
+     name: "mysql-server"
+     state: present
+
+- name: update mysql root password
+  mysql_user: 
+    name: "{{mysql_root_username}}"
+    host: "localhost"
+    password: "{{mysql_root_password}}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create Database
+  community.mysql.mysql_db:
+    check_implicit_admin: true
+    login_user: "{{mysql_root_username}}"
+    login_password: "{{mysql_root_password}}"
+    name: "{{wordpress_db_name}}"
+    state: present
+
+- name: Create User
+  community.mysql.mysql_user:
+    check_implicit_admin: true
+    login_user: "{{mysql_root_username}}"
+    login_password: "{{mysql_root_password}}"
+    name: "{{wordpress_db_user}}"
+    password: "{{wordpress_db_password}}"
+    state: present
+    priv: "{{wordpress_db_name}}.*:ALL,GRANT"
+
+# - name: create_a_new_database
+#   become: yes
+#   mysql_db:
+#     name: "{{wordpress_db_name}}"
+#     state: present
+
+# - name: create_a_new_user
+#   mysql_user:
+#     name: "{{wordpress_db_user}}"
+#     password: "{{wordpress_db_password}}"
+#     priv: "{{wordpress_db_name}}.*:ALL,GRANT"
+#     state: present

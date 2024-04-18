@@ -1,0 +1,13 @@
+---
+- name: Install WordPress with Custom Nginx and MySQL Config
+  hosts: localhost
+  become: yes
+
+  roles:
+    - mysql
+    - nginx
+    - php
+    - wordpress
+
+  vars_files:
+    - roles/common/vars/main.yml

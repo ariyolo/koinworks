@@ -1,0 +1,6 @@
+project_id          = "koinworks-420308"
+region              = "asia-southeast2"
+network_name        = "koinworks-vpc"
+subnet_name         = "subnet1"
+subnet_cidr         = "192.168.10.0/24"
+credentials_file    = "./service-accounts-key.json"
